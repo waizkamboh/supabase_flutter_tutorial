@@ -25,7 +25,7 @@ class _UpdateNotesScreenState extends State<UpdateNotesScreen> {
       await supaBase.from('notes').update({
         'name' : notesName.text,
         'description' : notesDesc.text,
-      }).eq('id', value);
+      }).eq('id', widget.note['id']);
     }catch(e){
       print(e);
     }finally{
@@ -37,10 +37,17 @@ class _UpdateNotesScreenState extends State<UpdateNotesScreen> {
     }
   }
   @override
+  void initState() {
+    notesName.text = widget.note['name'];
+    notesDesc.text = widget.note['description'];
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Notes'),
+        title: Text('Update Notes'),
         leading: IconButton(
           onPressed: (){
             Navigator.pop(context);
@@ -80,18 +87,11 @@ class _UpdateNotesScreenState extends State<UpdateNotesScreen> {
               loading? CircularProgressIndicator():
               ElevatedButton(
                   onPressed: (){
-                    addNotes();
+                    updateNotes();
                   },
-                  child: Text('Add Notes')
+                  child: Text('Update Notes')
               ),
-              const SizedBox(height: 30),
 
-              ElevatedButton(
-                  onPressed: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (_)=>GetNotesScreen()));
-                  },
-                  child: Text('Gets Notes')
-              ),
 
 
             ],
