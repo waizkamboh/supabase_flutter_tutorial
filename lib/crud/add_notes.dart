@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:supabase_flutter_tutorial/crud/get_notes.dart';
+import 'package:supabase_flutter_tutorial/crud/get_realtime_notes.dart';
+import 'package:supabase_flutter_tutorial/get_real_time_notes_with_channel.dart';
 
 class AddNotesScreen extends StatefulWidget {
   const AddNotesScreen({super.key});
@@ -87,7 +89,7 @@ class _AddNotesScreenState extends State<AddNotesScreen> {
 
               ElevatedButton(
                   onPressed: (){
-                   Navigator.push(context, MaterialPageRoute(builder: (_)=>GetNotesScreen()));
+                   Navigator.push(context, MaterialPageRoute(builder: (_)=>GetRealTimeNotesWithChannelScreen()));
                   },
                   child: Text('Gets Notes')
               ),
