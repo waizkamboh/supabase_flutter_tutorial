@@ -1,26 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:supabase_flutter_tutorial/crud/update_notes.dart';
 
-class GetCategory extends StatefulWidget {
-  const GetCategory({super.key});
+class GetNotesScreen extends StatefulWidget {
+  const GetNotesScreen({super.key});
 
   @override
-  State<GetCategory> createState() => _GetCategoryState();
+  State<GetNotesScreen> createState() => _GetNotesScreenState();
 }
 
-class _GetCategoryState extends State<GetCategory> {
+class _GetNotesScreenState extends State<GetNotesScreen> {
   final supaBase = Supabase.instance.client;
-  List<Map<String, dynamic>> category = [];
+  List<Map<String, dynamic>> notes = [];
   bool loading = false;
-  getCategory() async{
+  getNotes() async{
     setState(() {
       loading = true;
     });
     try{
-      final result = await supaBase.from('categories').select();
+      final result = await supaBase.from('notes').select();
 
       setState(() {
-        category = result;
+        notes = result;
       });
     }catch (e){
       print(e);
@@ -34,7 +35,7 @@ class _GetCategoryState extends State<GetCategory> {
 
   @override
   void initState() {
-    getCategory();
+    getNotes();
     super.initState();
   }
 
@@ -54,16 +55,16 @@ class _GetCategoryState extends State<GetCategory> {
       body: loading ? Center(child: CircularProgressIndicator()) :
       ListView(
         children: [
-          for(var index in category)
+          for(var note in notes)
             ListTile(
               onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (_)=> UpdateCategory(category: index,)));
+               Navigator.push(context, MaterialPageRoute(builder: (_)=> UpdateNotesScreen(note: note,)));
               },
-              title: Text(index['name']),
-              subtitle: Text(index['icon_url']),
+              title: Text(note['name']),
+              subtitle: Text(note['description']),
               trailing: IconButton(
                 onPressed: () async{
-                  await supaBase.from('categories').delete().eq('id', index['id']);
+                  await supaBase.from('notes').delete().eq('id', note['id']);
                 },
                 icon: Icon(Icons.delete),
                 color: Colors.red,

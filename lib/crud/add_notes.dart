@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:supabase_flutter_tutorial/crud/get_notes.dart';
 
 class AddNotesScreen extends StatefulWidget {
   const AddNotesScreen({super.key});
@@ -10,19 +11,19 @@ class AddNotesScreen extends StatefulWidget {
 
 class _AddNotesScreenState extends State<AddNotesScreen> {
 
-  final categoryName = TextEditingController();
-  final categoryIcon = TextEditingController();
+  final notesName = TextEditingController();
+  final notesDesc = TextEditingController();
   final supaBase = Supabase.instance.client;
   bool loading = false;
 
-  addCategory() async{
+  addNotes() async{
     setState(() {
       loading = true;
     });
     try{
-      await supaBase.from('categories').insert({
-        'name' : categoryName.text,
-        'icon_url' : categoryIcon.text,
+      await supaBase.from('notes').insert({
+        'name' : notesName.text,
+        'description' : notesDesc.text,
       });
     }catch(e){
       print(e);
@@ -48,44 +49,52 @@ class _AddNotesScreenState extends State<AddNotesScreen> {
 
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+        child: Padding(
+          padding:  EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
 
-             TextField(
-               controller: categoryName,
-               decoration: InputDecoration(
-                 hintText: 'Notes Name',
+               TextField(
+                 controller: notesName,
+                 decoration: InputDecoration(
+                   hintText: 'Notes Name',
+                   border: OutlineInputBorder()
 
+                 ),
                ),
-             ),
 
-            const SizedBox(height: 30),
+              const SizedBox(height: 30),
 
-            TextField(
-              controller: categoryName,
-              decoration: InputDecoration(
-                hintText: 'Notes Description',
+              TextField(
+                controller: notesDesc,
+                decoration: InputDecoration(
+                  hintText: 'Notes Description',
+                    border: OutlineInputBorder()
 
+
+                ),
               ),
-            ),
-            const SizedBox(height: 30),
-            loading? CircularProgressIndicator():
-            ElevatedButton(
-                onPressed: (){
-                  addCategory();
-                },
-                child: Text('Add Notes')
-            ),
+              const SizedBox(height: 30),
+              loading? CircularProgressIndicator():
+              ElevatedButton(
+                  onPressed: (){
+                    addNotes();
+                  },
+                  child: Text('Add Notes')
+              ),
+              const SizedBox(height: 30),
 
-            ElevatedButton(
-                onPressed: (){
-                },
-                child: Text('Gets Notes')
-            ),
+              ElevatedButton(
+                  onPressed: (){
+                   Navigator.push(context, MaterialPageRoute(builder: (_)=>GetNotesScreen()));
+                  },
+                  child: Text('Gets Notes')
+              ),
 
 
-          ],
+            ],
+          ),
         ),
       ),
     );
