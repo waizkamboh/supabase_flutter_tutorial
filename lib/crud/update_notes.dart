@@ -36,6 +36,7 @@ class _UpdateNotesScreenState extends State<UpdateNotesScreen> {
       });
     }
   }
+
   @override
   void initState() {
     notesName.text = widget.note['name'];

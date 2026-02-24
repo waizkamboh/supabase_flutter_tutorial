@@ -14,21 +14,23 @@ class _GetNotesScreenState extends State<GetNotesScreen> {
   List<Map<String, dynamic>> notes = [];
   bool loading = false;
   getNotes() async{
-    setState(() {
-      loading = true;
-    });
+    // setState(() {
+    //   loading = true;
+    // });
     try{
-      final result = await supaBase.from('notes').select();
+     // final result = await supaBase.from('notes').select();
+      // setState(() {
+      //   notes = result;
+      // });
 
-      setState(() {
-        notes = result;
+      //Get Real Time changes
+      supaBase.from('notes').stream(primaryKey: ['id']).listen((data){
+        setState(() {
+          notes = data;
+        });
       });
     }catch (e){
       print(e);
-    }finally{
-      setState(() {
-        loading = false;
-      });
     }
   }
 
